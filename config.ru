@@ -1,2 +1,2 @@
-require 'index.rb'
+require 'index'
 run Sinatra::Application
