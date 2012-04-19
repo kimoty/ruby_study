@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 require 'rubygems'
- require 'sequel'
+require 'sequel'
 
  def fact(n)
    if n == 0
@@ -123,3 +123,6 @@ require 'rubygems'
 items.each do |item|
  puts item[:name],item[:price]
 end
+
+
+puts items.all

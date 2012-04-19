@@ -3,19 +3,24 @@ require 'rubygems'
 require 'sinatra'
 require 'sequel'
 
-DB = Sequel.sqlite
-
-DB.create_table :todo do
-  primary_key :id
-  String :todo
-  #Date :date
+Sequel::Model.plugin(:schema)
+Sequel.connect('sqlite://todo.db')
+class Todo < Sequel::Model
+  unless table_exists?
+    set_schema do
+      primary_key :id
+      String :todo
+    end
+    create_table
+  end
 end
 
 
+
 post '/todo' do
-  todo = DB[:todo]
+  #todo = DB[:todo]
   #todo.insert(:todo => params[:todo])
-todo.insert(:todo => 'abc')
+Todo.insert(:todo => params[:todo])
 # @todo = params[:todo]
 #  open("foo.csv","a") { |f|
 #    f.puts @todo
@@ -33,8 +38,8 @@ get '/todo' do
 #  end
 # }
 
-  @lists = DB[:todo]
-
+  #@lists = DB[:todo]
+  @lists = Todo.all
   erb :index 
 end
 
