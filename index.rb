@@ -5,7 +5,7 @@ require 'sequel'
 require 'dm-core'
 require 'dm-migrations'
 
-DataMapper::setup(:default, ENV['DATABASE_URL'] || 'sqlite3:db.sqlite3')
+DataMapper::setup(:default, ENV['DATABASE_URL'] || 'sqlite3://#{Dir.pwd}/db.sqlite3')
 
 class Todo
 	include DataMapper::Resource
