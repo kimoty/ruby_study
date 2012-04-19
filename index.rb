@@ -2,45 +2,28 @@
 require 'rubygems'
 require 'sinatra'
 require 'sequel'
+require 'dm-core'
+require 'dm-migrations'
 
-Sequel::Model.plugin(:schema)
-Sequel.connect('sqlite://todo.db')
-class Todo < Sequel::Model
-  unless table_exists?
-    set_schema do
-      primary_key :id
-      String :todo
-    end
-    create_table
-  end
+DataMapper::setup(:default, ENV['DATABASE_URL'] || 'sqlite3:db.sqlite3')
+
+class Todo
+	include DataMapper::Resource
+	property :id, Serial
+	property :todo, Text
+	auto_upgrade!
 end
 
 
 
 post '/todo' do
-  #todo = DB[:todo]
-  #todo.insert(:todo => params[:todo])
-Todo.insert(:todo => params[:todo])
-# @todo = params[:todo]
-#  open("foo.csv","a") { |f|
-#    f.puts @todo
-#  }
-  redirect '/todo'
+	Todo.create(:todo => params[:todo])
+	redirect '/todo'
 end
 
-# @lists = ['aaaa','bbbb','cccc']
 get '/todo' do
-
-# @lists = []
-# open("foo.csv") {|file|
-#  while l = file.gets
-#    @lists.push(l)
-#  end
-# }
-
-  #@lists = DB[:todo]
-  @lists = Todo.all
-  erb :index 
+	@lists = Todo.all
+	erb :index 
 end
 
 
