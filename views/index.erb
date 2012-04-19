@@ -1,0 +1,16 @@
+<form method="post" action="/todo">
+<input type="text" name="todo">
+<input type="submit" value="追加">
+</form>
+
+
+
+<table border = 1>
+<% @lists.each {|list| %>
+<tr>
+<td>
+<%= h list[:todo] %>
+</td>
+</tr>
+<% } %>
+</table>
